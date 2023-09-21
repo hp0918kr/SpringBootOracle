@@ -178,7 +178,7 @@
 <h2>회원 가입하기</h2>
 <hr/>
 <br/>
-<form id = "f">
+<form id="f">
     <div class="divTable minimalistBlack">
         <div class="divTableBody">
             <div class="divTableRow">
@@ -197,11 +197,39 @@
                 </div>
             </div>
             <div class="divTableRow">
-
+                <div class="divTableCell">* 비밀번호
+                    <input type="password" name="password" style="width: 95%" placeholder="비밀번호"/>
+                </div>
+            </div>
+            <div class="divTableRow">
+                <div class="divTableCell">* 이메일
+                </div>
+                <div class="divTableCell">
+                    <input type="email" name="email" style="width: 40%" placeholder="이메일주소"/>
+                    <input type="text" name="authNumber" style="width: 30%" placeholder="메일로 발송된 인증번호"/>
+                    <button id="btnEmail" type="button">이메일 중복체크</button>
+                </div>
+            </div>
+            <div class="divTableRow">
+                <div class="divTableCell">* 주소
+                </div>
+                <div class="divTableCell">
+                    <input type="text" name="addr1" style="width: 85%" placeholder="주소"/>
+                    <button id="btnAddr" type="button">우편번호</button>
+                </div>
+            </div>
+            <div class="divTableRow">
+                <div class="divTableCell">*상세 주소
+                </div>
+                <div class="divTableCell">
+                    <input type="text" name="addr2" style="width: 95%" placeholder="상세주소"/>
+                </div>
             </div>
         </div>
     </div>
-
+    <div>
+        <button id="btnSend" type="button">회원가입</button>
+    </div>
 </form>
 </body>
 </html>
