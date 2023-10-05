@@ -3,14 +3,16 @@ package kopo.poly.service.impl;
 import kopo.poly.dto.MailDTO;
 import kopo.poly.dto.UserInfoDTO;
 import kopo.poly.service.IMailService;
-import kopo.poly.service.IUserInfoMapper;
+import kopo.poly.persistance.mapper.IUserInfoMapper;
 import kopo.poly.service.IUserInfoService;
 import kopo.poly.util.CmmUtil;
+import kopo.poly.util.DateUtil;
 import kopo.poly.util.EncryptUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
@@ -24,7 +26,8 @@ public class UserInfoService implements IUserInfoService {
 
     @Override
     public UserInfoDTO getUserIdExists(UserInfoDTO pDTO) throws Exception {
-        log.info(this.getClass().getName() + ".getUserIdExistsd Start!");
+
+        log.info(this.getClass().getName() + ".getUserIdExists Start!");
 
         UserInfoDTO rDTO = userInfoMapper.getUserIdExists(pDTO);
 
@@ -40,7 +43,7 @@ public class UserInfoService implements IUserInfoService {
 
         UserInfoDTO rDTO = userInfoMapper.getEmailExists(pDTO);
 
-        String existsYn = CmmUtil.nvl(rDTO.getExistYn());
+        String existsYn = CmmUtil.nvl(rDTO.getExistsYn());
 
         log.info("existsYn : " + existsYn);
 
@@ -97,6 +100,69 @@ public class UserInfoService implements IUserInfoService {
             log.info(this.getClass().getName() + ".insertUserInfo End!");
 
             return res;
+    }
+
+    /**
+     * 로그인을 위해 아이디와 비밀번호가 일치하는지 확인
+     * @param pDTO 로그인을 위한 회원아이디, 비밀번호
+     * @return 로그인된 회원 아이디 정보
+     */
+    @Override
+    public UserInfoDTO getLogin(UserInfoDTO pDTO) throws Exception {
+
+        log.info(this.getClass().getName() + ".getLogin Start!");
+
+        //로그인을 위해 아이디와 비밀번호가 일치하는지 확인하기 위한 mapper 호출
+        // userInfoMapper
+        UserInfoDTO rDTO = Optional.ofNullable(userInfoMapper.getLogin(pDTO)).orElseGet(UserInfoDTO::new);
+
+        if (CmmUtil.nvl(rDTO.getUserId()).length() > 0) {
+
+            MailDTO mDTO = new MailDTO();
+
+            mDTO.setToMail(EncryptUtil.decAES128CBC(CmmUtil.nvl(rDTO.getEmail())));
+
+            mDTO.setTitle("로그인 알림!"); //제목
+
+            mDTO.setContents(DateUtil.getDateTime("yyyy.MM.dd hh:mm:ss") + "에 "
+                    + CmmUtil.nvl(rDTO.getUserName()) + "님이 로그인하였습니다.");
+
+            mailService.doSendMail(mDTO);
+
+        }
+
+        log.info(this.getClass().getName() + ".getLogin End!");
+
+        return rDTO;
+    }
+
+    @Override
+    public UserInfoDTO searchUserIdOrPasswordProc(UserInfoDTO pDTO) throws Exception {
+        return null;
+    }
+   @Override
+    public UserInfoDTO getUserId(UserInfoDTO pDTO) throws Exception {
+
+        log.info(this.getClass().getName() + ".searchUserIdOrPasswordProc Start!");
+
+        UserInfoDTO rDTO = userInfoMapper.getUserId(pDTO);
+
+        log.info(this.getClass().getName() + ".searchUserIdOrPasswordProc Start!");
+
+        return rDTO;
+    }
+
+    @Override
+    public int newPasswordProc(UserInfoDTO pDTO) throws Exception {
+
+        log.info(this.getClass().getName() + ".newPsswordProc Start!");
+
+        // 비밀번호 재설정
+        int success = userInfoMapper.updatePassword(pDTO);
+
+        log.info(this.getClass().getName() + ".newPasswordProc End!");
+
+        return success;
     }
 }
 

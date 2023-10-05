@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>회원가입 화면</title>
     <link rel="stylesheet" href="/css/table.css">
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcod/prod/postcode.v2.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
 
@@ -37,7 +37,7 @@
         function userIdExists(f) {
 
             if (f.userId.value === "") {
-                arlert("아이디를 입력하세요.");
+                alert("아이디를 입력하세요.");
                 f.userId.focus();
                 return;
             }
@@ -48,8 +48,11 @@
                 data: $("#f").serialize(),
                 success: function (json) {
 
-                    if (json.existYn === "Y") {
+                    if (json.existsYn === "Y") {
                         alert("이미 가입된 아이디가 존재합니다.");
+                        userIdCheck = "N";
+                    } else {
+                        alert("가입 가능한 아이디입니다.");
                         userIdCheck = "N";
                     }
                 }
@@ -65,7 +68,7 @@
             $.ajax({
                 url: "/user/qetEmailExists",
                 type: "post",
-                dataTyoe: "JSON",
+                dataType: "JSON",
                 data: $("#f").serialize(),
                 success: function (json) {
 
@@ -85,7 +88,7 @@
             new daum.Postcode({
                 oncomplete: function (data) {
 
-                    let addres = data.address;
+                    let address = data.address;
                     let zonecode = data.zonecode;
                     f.addr1.value = "(" + zonecode + ")" + address
                 }
@@ -138,7 +141,7 @@
 
             if (f.authNumber.value === "") {
                 alert("인증번호가 일치하지 않습니다.");
-                f, authNumber.focus();
+                f.authNumber.focus();
                 return;
             }
 
@@ -163,7 +166,7 @@
 
                     if (json.result === 1) {
                         alert(json.msg);
-                        locatuin.href = "/user/login";
+                        location.href = "/user/login";
 
                     } else {
                         alert(json.msg);
@@ -198,7 +201,16 @@
             </div>
             <div class="divTableRow">
                 <div class="divTableCell">* 비밀번호
+                </div>
+                <div class="divTableCell">
                     <input type="password" name="password" style="width: 95%" placeholder="비밀번호"/>
+                </div>
+            </div>
+            <div class="divTableRow">
+                <div class="divTableCell">* 비밀번호확인
+                </div>
+                <div class="divTableCell">
+                    <input type="password" name="password2" style="width: 95%" placeholder="비밀번호 확인"/>
                 </div>
             </div>
             <div class="divTableRow">

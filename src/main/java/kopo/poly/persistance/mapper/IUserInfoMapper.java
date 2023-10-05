@@ -1,4 +1,4 @@
-package kopo.poly.service;
+package kopo.poly.persistance.mapper;
 
 import kopo.poly.dto.UserInfoDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -11,5 +11,11 @@ public interface IUserInfoMapper {
     UserInfoDTO getUserIdExists(UserInfoDTO pDTO) throws Exception;
 
     UserInfoDTO getEmailExists(UserInfoDTO pDTO) throws Exception;
+
+    UserInfoDTO getLogin(UserInfoDTO pDTO) throws Exception;
+
+    UserInfoDTO getUserId(UserInfoDTO pDTO) throws Exception;
+    UserInfoDTO searchUserIdOrPasswordProc(UserInfoDTO pDTO) throws Exception;
+    int updatePassword(UserInfoDTO pDTO) throws Exception;
 
 }

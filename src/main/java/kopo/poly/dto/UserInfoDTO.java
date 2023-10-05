@@ -20,7 +20,7 @@ public class UserInfoDTO {
     private String chgId;
     private String chgDt;
 
-    private String existYn;
+    private String existsYn;
 
     private int authNumber;
 
