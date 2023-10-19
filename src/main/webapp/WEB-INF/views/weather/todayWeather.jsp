@@ -19,6 +19,18 @@
 <div class="divTable minimalistBlack">
     <div class="divTableHeading">
         <div class="divTableRow">
+            <div class="divTableHead">위치</div>
+        </div>
+    </div>
+    <div class="divTableBody">
+        <%
+            for (WeatherDTO rDTO : rList) {
+        %>
+    </div>
+</div>
+<div class="divTable minimalistBlack">
+    <div class="divTableHeading">
+        <div class="divTableRow">
             <div class="divTableHead">온도</div>
         </div>
     </div>
